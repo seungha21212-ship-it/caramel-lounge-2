@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project — CARAMEL LOUNGE</title>
+<meta name="description" content="CARAMEL LOUNGE가 진행한 상업공간·주거공간·사무공간·피트니스 프로젝트.">
+<link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+
+<header class="site-head">
+  <a class="mark" href="index.html"><b>CARAMEL</b><span>LOUNGE</span></a>
+  <nav class="nav">
+    <a href="about.html">About</a>
+    <a href="space.html" aria-current="page">Project</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<main class="page">
+  <section class="wrap">
+    <div class="filters" id="filters">
+      <select id="catFilter" aria-label="카테고리"></select>
+      <select id="yearFilter" aria-label="연도"></select>
+    </div>
+    <div class="projects" id="projects"></div>
+  </section>
+</main>
+
+<!-- ── 프로젝트 상세 ──────────────────────────────────────── -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="프로젝트 상세">
+  <button class="modal-close" id="modalClose" type="button">CLOSE ✕</button>
+  <div class="modal-inner" id="modalBody"></div>
+</div>
+
+<footer class="site-foot">
+  <div class="foot-top">
+    <a class="mark" href="index.html"><b>CARAMEL</b><span>LOUNGE</span></a>
+    <nav class="foot-nav">
+      <a href="index.html">Home</a><span class="sep">/</span>
+      <a href="about.html">About</a><span class="sep">/</span>
+      <a href="space.html" aria-current="page">Project</a><span class="sep">/</span>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+  <div class="foot-cols">
+    <div class="foot-col">
+      <div class="foot-col-head">We're based in</div>
+      <hr>
+      <p>서울 마포구 양화로6길 9-24<br>Seoul, Republic of Korea</p>
+    </div>
+    <div class="foot-col">
+      <div class="foot-col-head">Get in touch</div>
+      <hr>
+      <p><a href="mailto:caramellounge@naver.com">caramellounge@naver.com</a><br>+82 70 5121 4658</p>
+    </div>
+  </div>
+  <div class="copy">
+    Company: Caramel Lounge corporation<span class="sep">|</span>FRONT Man: Junha Song<br>
+    Business Number: 677-87-00761<span class="sep">|</span>License: 용산2020-01-07<span class="sep">|</span><a href="mailto:caramellounge@naver.com">caramellounge@naver.com</a>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+<script>
+/* =========================================================
+   프로젝트 데이터 — 여기만 고치면 목록이 바뀝니다.
+   cat 은 4개 고정: Commercial · Residential · Office · Fitness
+   사진: assets/projects/<slug>-01.jpg ... -03.jpg
+   (파일이 없으면 자동으로 빗금 플레이스홀더가 표시됩니다)
+   ========================================================= */
+var CATS = ["Commercial", "Residential", "Office", "Fitness"];
+
+var PROJECTS = [
+  {
+    slug: "hojeong-coffee", name: "HOJEONG COFFEE", kr: "호정 커피 성수",
+    cat: "Commercial", year: "2026", loc: "서울 성동구 성수동", area: "132㎡ (40py)",
+    scope: "기획 · 설계 · 시공 · 사인",
+    desc: "오래된 인쇄공장 1층을 남기고 덜어낸 카페. 기존 슬래브의 거친 면을 그대로 두고, 바 상판과 계단 한 켤레에만 정제된 스테인리스를 썼습니다. 줄이 길어지는 주말을 기준으로 픽업대를 창가로 분리해, 대기 줄이 좌석 동선을 가로지르지 않도록 정리했습니다."
+  },
+  {
+    slug: "signal-bake", name: "SIGNAL BAKE", kr: "시그널 베이크 연남",
+    cat: "Commercial", year: "2025", loc: "서울 마포구 연남동", area: "99㎡ (30py)",
+    scope: "설계 · 시공 · 제작가구",
+    desc: "빵이 나오는 시간이 곧 매장의 리듬이 되는 베이커리. 오븐에서 진열대까지의 거리를 7보 안으로 줄이고, 진열 조도를 3000K·900lx로 맞춰 크러스트의 색이 가장 정확하게 보이도록 했습니다. 손님의 시선이 닿는 면만 오크, 나머지는 세척이 쉬운 타일로 마감했습니다."
+  },
+  {
+    slug: "gray-table", name: "GRAY TABLE", kr: "그레이 테이블 한남",
+    cat: "Commercial", year: "2024", loc: "서울 용산구 한남동", area: "175㎡ (53py)",
+    scope: "기획 · 설계 · 시공",
+    desc: "저녁 한 끼를 위해 찾아오는 다이닝. 조도를 세 단계로 나눠 시간이 지날수록 테이블만 남도록 설계했습니다. 4인석과 2인석의 비율을 예약 데이터에 맞춰 재배치하고, 홀과 주방 사이에 소음 완충 구간을 만들어 피크 타임의 체감 소음을 낮췄습니다."
+  },
+  {
+    slug: "fold-store", name: "FOLD STORE", kr: "폴드 스토어 전포",
+    cat: "Commercial", year: "2025", loc: "부산 부산진구 전포동", area: "118㎡ (36py)",
+    scope: "설계 · 시공 · 집기 모듈",
+    desc: "시즌마다 구성이 바뀌는 편집숍. 벽면을 30cm 그리드의 슬롯 시스템으로 통일해, 선반·행거·테이블을 공구 없이 재조합할 수 있게 했습니다. 중앙 집기는 바퀴를 달아 팝업 시 완전히 비울 수 있는 평면으로 계획했습니다."
+  },
+  {
+    slug: "blank-office", name: "BLANK OFFICE", kr: "블랭크 오피스 판교",
+    cat: "Office", year: "2025", loc: "경기 성남시 분당구", area: "430㎡ (130py)",
+    scope: "기획 · 설계 · 시공 · FF&E",
+    desc: "40인 규모 IT 기업의 본사. 집중 구역과 협업 구역을 소리로 나눴습니다. 흡음 천장과 카펫 타일로 잔향을 0.6초 이하로 잡고, 회의실 네 개를 크기별로 배치해 예약 충돌을 줄였습니다. 인원 60인까지 좌석을 늘릴 수 있는 확장 계획을 함께 남겼습니다."
+  },
+  {
+    slug: "i-square-office-pangyo", name: "I-SQUARE OFFICE PANGYO", kr: "아이스퀘어 오피스 판교",
+    cat: "Office", year: "2025", loc: "경기 성남시 분당구 판교동", area: "860㎡ (260py)",
+    scope: "기획 · 설계 · 시공 · FF&E",
+    desc: "IT 기업 본사 이전 프로젝트. 층별로 집중석과 협업존의 비율을 다르게 배분하고, 코어 주변 소음원을 막는 흡음 파티션으로 개방형 사무공간의 단점을 보완했습니다."
+  },
+  {
+    slug: "i-square-c2-pangyo", name: "I-SQUARE C2 PANGYO", kr: "아이스퀘어 C2 판교",
+    cat: "Office", year: "2026", loc: "경기 성남시 분당구 판교동", area: "620㎡ (188py)",
+    scope: "설계 · 시공",
+    desc: "기존 I-SQUARE 오피스의 2차 확장동. 1차 공간과 동일한 마감 언어를 유지하면서 회의실 비중을 늘려 늘어난 인원에 대응했습니다."
+  },
+  {
+    slug: "nautilus-investment-office", name: "NAUTILUS INVESTMENT OFFICE", kr: "노틸러스 인베스트먼트 오피스",
+    cat: "Office", year: "2024", loc: "서울 영등포구 여의도동", area: "410㎡ (124py)",
+    scope: "기획 · 설계 · 시공",
+    desc: "투자운용사 사무실. 응접 공간과 트레이딩 데스크의 위계를 명확히 나누고, 방문객 동선이 업무 공간을 가로지르지 않도록 계획했습니다."
+  },
+  {
+    slug: "tenping-office", name: "TENPING OFFICE", kr: "텐핑 오피스",
+    cat: "Office", year: "2023", loc: "서울 강남구", area: "330㎡ (100py)",
+    scope: "설계 · 시공",
+    desc: "스타트업 사무실. 고정석 대신 자유석 비중을 높이고, 전화·화상회의 수요가 많은 조직 특성에 맞춰 1인용 부스를 여러 개 배치했습니다."
+  },
+  {
+    slug: "building-remodeling-yeoksam", name: "BUILDING REMODELING YEOKSAM", kr: "역삼동 빌딩 리모델링",
+    cat: "Office", year: "2025", loc: "서울 강남구 역삼동", area: "1200㎡ (363py)",
+    scope: "기획 · 설계 · 시공",
+    desc: "준공 20년 차 오피스 빌딩의 로비와 공용부 전면 리모델링. 노후한 파사드와 엘리베이터 홀을 재구성해 건물 전체의 임대 경쟁력을 끌어올렸습니다."
+  },
+  {
+    slug: "yumi-hair", name: "YUMI HAIR", kr: "유미 헤어 청담",
+    cat: "Commercial", year: "2026", loc: "서울 강남구 청담동", area: "86㎡ (26py)",
+    scope: "설계 · 시공",
+    desc: "1:1 예약제 살롱. 거울 앞에서 손님이 마주하는 배경을 가장 먼저 정했습니다. 샴푸실을 안쪽으로 밀고 자연광이 드는 창가를 시술석으로 돌려, 색을 확인하는 순간의 광원을 확보했습니다."
+  },
+  {
+    slug: "seom-clinic", name: "SEOM CLINIC", kr: "섬 클리닉 압구정",
+    cat: "Commercial", year: "2024", loc: "서울 강남구 압구정동", area: "210㎡ (64py)",
+    scope: "기획 · 설계 · 시공 · 사인",
+    desc: "피부과 클리닉. 접수–대기–상담–시술–수납이 서로 마주치지 않는 단방향 동선으로 풀었습니다. 대기실은 창을 등지게 앉히고 조도를 낮춰, 진료실과 다른 공기가 되도록 했습니다."
+  },
+  {
+    slug: "nuovo-pilates", name: "NUOVO PILATES", kr: "누오보 필라테스 합정",
+    cat: "Fitness", year: "2026", loc: "서울 마포구 합정동", area: "264㎡ (80py)",
+    scope: "설계 · 시공",
+    desc: "기구 필라테스 스튜디오. 리포머 하중과 층간 소음을 먼저 검토해 바닥 구성을 결정했습니다. 천장 높이를 최대로 열고 간접 조명만 남겨, 누워서 보는 시야에 눈부심이 없도록 계획했습니다."
+  },
+  {
+    slug: "danjeon-bar", name: "DANJEON BAR", kr: "단전 바 을지로",
+    cat: "Commercial", year: "2023", loc: "서울 중구 을지로3가", area: "64㎡ (19py)",
+    scope: "설계 · 시공 · 스타일링",
+    desc: "13석의 작은 바. 좁고 긴 평면을 살려 바 뒤편을 하나의 진열장으로 만들었습니다. 낮은 조도에서도 병 라벨이 읽히도록 선반마다 저광량 라인 조명을 숨겼습니다."
+  },
+  {
+    slug: "kanu-jayang", name: "KANU JAYANG STATION", kr: "카누 자양역점",
+    cat: "Commercial", year: "2025", loc: "서울 광진구 자양동", area: "46㎡ (14py)",
+    scope: "설계 · 시공",
+    desc: "원두 로스팅 향이 입구까지 이어지도록 오픈 바 구조로 설계한 역세권 카페. 좁은 폭을 살려 동선을 일자로 정리하고, 테이크아웃 손님과 좌석 손님의 대기 지점을 분리했습니다."
+  },
+  {
+    slug: "cream-atelier-popup", name: "CREAM ATELIER POPUP", kr: "더 크림 아틀리에 팝업",
+    cat: "Commercial", year: "2024", loc: "서울 강남구", area: "58㎡ (17py)",
+    scope: "설계 · 시공 · 스타일링",
+    desc: "짧은 기간 안에 브랜드 톤을 각인시켜야 하는 팝업 스토어. 딥레드 톤 격자 패널로 배경을 만들고, 조명은 제품 하나에만 집중되도록 낮췄습니다."
+  },
+  {
+    slug: "sobokjae-shabu", name: "SOBOKJAE SHABU", kr: "소복재 샤브",
+    cat: "Commercial", year: "2023", loc: "서울", area: "145㎡ (44py)",
+    scope: "기획 · 설계 · 시공 · 사인",
+    desc: "샤브샤브 전문점. 입구 사인부터 홀까지 이어지는 어두운 톤의 마감으로 격식 있는 분위기를 만들고, 개별 룸과 홀 좌석의 소음이 섞이지 않도록 동선을 나눴습니다."
+  },
+  {
+    slug: "grafen-popup", name: "GRAFEN POPUP", kr: "그라펜 팝업",
+    cat: "Commercial", year: "2024", loc: "서울", area: "52㎡ (16py)",
+    scope: "설계 · 시공",
+    desc: "쇼윈도 자체가 광고판이 되는 팝업. 형광 오렌지 사인과 제품 진열대를 창가에 몰아, 지나가는 사람의 시선이 걸음을 멈추도록 설계했습니다."
+  },
+  {
+    slug: "seven-eleven-dongdaemun", name: "SEVEN ELEVEN DONGDAEMUN", kr: "세븐일레븐 동대문점",
+    cat: "Commercial", year: "2025", loc: "서울 중구 동대문", area: "92㎡ (28py)",
+    scope: "설계 · 시공",
+    desc: "유동 인구가 많은 상권의 편의점. 파사드 사인 가시성을 우선 검토하고, 매대 폭과 통로 동선을 혼잡 시간대 기준으로 재배치했습니다."
+  },
+  {
+    slug: "sevenbrau-popup", name: "SEVENBRÄU POPUP", kr: "세븐브로이 팝업",
+    cat: "Commercial", year: "2023", loc: "서울", area: "64㎡ (19py)",
+    scope: "설계 · 시공 · 스타일링",
+    desc: "수제맥주 브랜드의 야외 팝업 바. 캔 적재물을 그대로 집기로 활용하고, 네온 사인 하나로 밤 시간대의 동선을 안내하도록 조명을 단순화했습니다."
+  },
+  {
+    slug: "ttuktak-seolleongtang", name: "TTUKTTAK SEOLLEONGTANG", kr: "뚝딱설렁탕",
+    cat: "Commercial", year: "2024", loc: "서울", area: "79㎡ (24py)",
+    scope: "기획 · 설계 · 시공 · 사인",
+    desc: "전통 설렁탕집의 세대교체형 리뉴얼. 옛 간판의 글씨체를 다시 그려 사인에 살리고, 주방과 홀 사이 배식 동선만 새 기준으로 정리했습니다."
+  },
+  {
+    slug: "kanu-signature", name: "KANU SIGNATURE", kr: "카누 시그니처",
+    cat: "Commercial", year: "2026", loc: "서울", area: "68㎡ (21py)",
+    scope: "설계 · 시공",
+    desc: "브랜드 플래그십 카페. 어두운 벽면에 얇은 금색 라인만 남겨 로고가 조명처럼 보이도록 하고, 좌석보다 바 경험을 중심에 둔 평면으로 계획했습니다."
+  },
+  {
+    slug: "nespresso-lotte", name: "NESPRESSO LOTTE DEPARTMENT STORE", kr: "네스프레소 롯데백화점",
+    cat: "Commercial", year: "2025", loc: "서울", area: "41㎡ (12py)",
+    scope: "설계 · 시공",
+    desc: "백화점 내 숍인숍 매장. 제한된 폭 안에서 캡슐 진열, 시음 바, 계산대를 순서대로 배치해 동선이 겹치지 않도록 했습니다."
+  },
+  {
+    slug: "jangmeerasa", name: "JANGMEERASA", kr: "장미라사",
+    cat: "Commercial", year: "2023", loc: "서울", area: "33㎡ (10py)",
+    scope: "설계 · 시공 · 사인",
+    desc: "오래된 양복점의 골조와 재봉틀을 그대로 남기고, 동판 사인 하나만 새로 제작해 가게가 지나온 시간을 지우지 않는 방향으로 리뉴얼했습니다."
+  },
+  {
+    slug: "hannam-residence", name: "HANNAM RESIDENCE", kr: "한남 자택",
+    cat: "Residential", year: "2025", loc: "서울 용산구 한남동", area: "165㎡ (50py)",
+    scope: "설계 · 시공 · 가구 컨설팅",
+    desc: "4인 가족의 오래된 아파트 전체 리노베이션. 주방을 거실 쪽으로 열어 아이를 지켜보며 요리할 수 있게 동선을 바꾸고, 수납은 방마다 눈에 보이지 않는 위치로 분산했습니다. 마감은 관리가 쉬운 재료로 통일해 오래 살아도 낡아 보이지 않도록 했습니다."
+  },
+  {
+    slug: "fitloop-gym", name: "FITLOOP GYM", kr: "핏루프 짐 왕십리",
+    cat: "Fitness", year: "2024", loc: "서울 성동구 왕십리동", area: "330㎡ (100py)",
+    scope: "기획 · 설계 · 시공",
+    desc: "웨이트존과 그룹PT룸을 분리한 복합 피트니스. 충격 소음을 잡는 방진 바닥과 환기량을 키운 공조 계획으로 장비 밀도가 높아도 답답하지 않게 설계했습니다."
+  },
+  {
+    slug: "butfit-ground-samsung", name: "BUTFIT GROUND SAMSUNG", kr: "벗핏 그라운드 삼성점",
+    cat: "Fitness", year: "2024", loc: "서울 강남구 삼성동", area: "430㎡ (130py)",
+    scope: "설계 · 시공",
+    desc: "기구 존과 그룹 수업룸을 분리한 복합 피트니스. 유리 파티션으로 시야는 열되 소리는 막아, 수업 중에도 웨이트존이 산만해지지 않도록 했습니다."
+  },
+  {
+    slug: "butfit-ground-pangyo", name: "BUTFIT GROUND PANGYO", kr: "벗핏 그라운드 판교점",
+    cat: "Fitness", year: "2025", loc: "경기 성남시 분당구 판교동", area: "460㎡ (139py)",
+    scope: "설계 · 시공",
+    desc: "판교 오피스 상권의 퇴근길 동선을 고려해 입구를 1층 대로변으로 냈습니다. 샤워실 대기 줄이 운동 공간과 겹치지 않도록 락커 동선을 분리했습니다."
+  },
+  {
+    slug: "butfit-ground-gangbyeon", name: "BUTFIT GROUND GANGBYEON", kr: "벗핏 그라운드 강변점",
+    cat: "Fitness", year: "2023", loc: "서울 광진구 구의동", area: "395㎡ (120py)",
+    scope: "설계 · 시공",
+    desc: "한강뷰를 살린 러닝존 배치가 핵심인 지점. 창가 라인에 트레드밀을 몰고, 프리웨이트존은 채광이 적은 안쪽으로 넣었습니다."
+  },
+  {
+    slug: "butfitground-hapjeong", name: "BUTFITGROUND HAPJUNG", kr: "벗핏그라운드 합정점",
+    cat: "Fitness", year: "2024", loc: "서울 마포구 합정동", area: "350㎡ (106py)",
+    scope: "설계 · 시공",
+    desc: "좁고 긴 상가 건물 구조를 살려 존별 동선을 일렬로 배치하고, 층고가 낮은 구간은 전신 거울과 조명으로 시각적 개방감을 보완했습니다."
+  },
+  {
+    slug: "butfitground-gfc", name: "BUTFITGROUND GFC", kr: "벗핏그라운드 GFC점",
+    cat: "Fitness", year: "2026", loc: "서울 영등포구 여의도동", area: "510㎡ (154py)",
+    scope: "기획 · 설계 · 시공",
+    desc: "오피스 밀집 지구의 이른 아침·점심 시간대 회전율을 고려해 락커와 샤워실 개수를 일반 지점보다 늘렸습니다."
+  },
+  {
+    slug: "butfitground-hanti", name: "BUTFITGROUND HANTI", kr: "벗핏그라운드 대치점",
+    cat: "Fitness", year: "2023", loc: "서울 강남구 대치동", area: "380㎡ (115py)",
+    scope: "설계 · 시공",
+    desc: "학원가 인근 지점 특성을 반영해 저녁 시간대 그룹 수업 비중을 높이고, 수업룸 두 개를 접이식 벽으로 나눠 쓸 수 있게 했습니다."
+  },
+  {
+    slug: "butfitground-pangyo-venture-town", name: "BUTFITGROUND PANGYO VENTURE TOWN", kr: "벗핏그라운드 판교벤처타운점",
+    cat: "Fitness", year: "2025", loc: "경기 성남시 분당구", area: "440㎡ (133py)",
+    scope: "설계 · 시공",
+    desc: "입주사 임직원 전용 지점. 사원증 게이트와 연동되는 출입 동선을 반영해 데스크 구조를 단순화했습니다."
+  },
+  {
+    slug: "healthboy-gym-pangyo", name: "HEALTHBOY GYM PANGYO", kr: "헬스보이짐 판교점",
+    cat: "Fitness", year: "2024", loc: "경기 성남시 분당구 판교동", area: "620㎡ (188py)",
+    scope: "기획 · 설계 · 시공",
+    desc: "대형 프리웨이트존을 갖춘 지점. 천장 배관을 그대로 노출한 인더스트리얼 톤으로 마감해 장비 밀도가 높아도 무겁게 느껴지지 않도록 했습니다."
+  },
+  {
+    slug: "healthboy-gym-lotte", name: "HEALTHBOY GYM LOTTE DEPARTMENT STORE", kr: "헬스보이짐 롯데백화점점",
+    cat: "Fitness", year: "2025", loc: "서울", area: "540㎡ (163py)",
+    scope: "설계 · 시공",
+    desc: "백화점 상층부 입점 지점. 쇼핑 동선과 회원 전용 동선을 엘리베이터 단계부터 분리해 프라이버시를 확보했습니다."
+  },
+  {
+    slug: "healthboy-gym-byeongjeom", name: "HEALTHBOY GYM BYEONGJEOM", kr: "헬스보이짐 병점점",
+    cat: "Fitness", year: "2023", loc: "경기 화성시 병점동", area: "480㎡ (145py)",
+    scope: "설계 · 시공",
+    desc: "지역 최대 규모를 목표로 한 지점. 넓은 평면을 살려 기구 간 동선 폭을 넉넉히 확보하고, 주차장과 바로 연결되는 전용 출입구를 냈습니다."
+  },
+  {
+    slug: "healthboy-gym-changwon", name: "HEALTHBOY GYM CHANGWON", kr: "헬스보이짐 창원점",
+    cat: "Fitness", year: "2026", loc: "경남 창원시", area: "590㎡ (178py)",
+    scope: "기획 · 설계 · 시공",
+    desc: "1·2층 복층 구조 지점. 1층은 프리웨이트, 2층은 유산소와 그룹룸으로 나누고 계단참에 스트레칭존을 배치해 층간 이동 동선을 자연스럽게 만들었습니다."
+  },
+  {
+    slug: "soul-training-cheongnyangni", name: "SOUL TRAINING CHEONGNYANGNI", kr: "소울트레이닝 청량리점",
+    cat: "Fitness", year: "2024", loc: "서울 동대문구 청량리동", area: "310㎡ (94py)",
+    scope: "설계 · 시공",
+    desc: "역세권 소형 지점. 1:1 PT룸 비중을 늘리고 공용 기구존은 최소한으로 압축해 회원 관리형 운영 방식에 맞췄습니다."
+  },
+  {
+    slug: "soul-training-pangyo", name: "SOUL TRAINING PANGYO", kr: "소울트레이닝 판교점",
+    cat: "Fitness", year: "2025", loc: "경기 성남시 분당구", area: "340㎡ (103py)",
+    scope: "설계 · 시공",
+    desc: "오피스 상권 지점 특성상 점심시간 회전율이 핵심이었습니다. 탈의실 동선을 단축해 운동 전후 대기 시간을 줄였습니다."
+  },
+  {
+    slug: "fitness-bm-jamsil", name: "FITNESS BM JAMSIL", kr: "피트니스 비엠 잠실점",
+    cat: "Fitness", year: "2023", loc: "서울 송파구 잠실동", area: "290㎡ (88py)",
+    scope: "설계 · 시공",
+    desc: "주거 밀집 지역 지점. 저녁·주말 가족 단위 회원을 고려해 초보자용 존을 입구 가까이 배치했습니다."
+  },
+  {
+    slug: "fitness-bm-koreana", name: "FITNESS BM KOREANA HOTEL", kr: "피트니스 비엠 코리아나호텔점",
+    cat: "Fitness", year: "2026", loc: "서울 중구", area: "260㎡ (79py)",
+    scope: "설계 · 시공",
+    desc: "호텔 부대시설로 들어가는 피트니스. 투숙객과 일반 회원의 접수 동선을 분리하고, 호텔 톤에 맞춰 마감재를 격상했습니다."
+  },
+  {
+    slug: "highlight-fitness-gangnam", name: "HIGHLIGHT FITNESS GANGNAM", kr: "하이라이트 피트니스 강남점",
+    cat: "Fitness", year: "2024", loc: "서울 강남구", area: "470㎡ (142py)",
+    scope: "기획 · 설계 · 시공",
+    desc: "프리미엄 포지셔닝의 강남 플래그십 지점. 어두운 톤의 마감과 스포트라이트 조명으로 웨이트존 자체를 쇼룸처럼 연출했습니다."
+  },
+  {
+    slug: "supervill-sports-club", name: "SUPERVILL SPORTS CLUB", kr: "수퍼빌 스포츠클럽",
+    cat: "Fitness", year: "2023", loc: "서울", area: "720㎡ (218py)",
+    scope: "기획 · 설계 · 시공 · 사인",
+    desc: "수영장을 포함한 복합 스포츠 클럽. 습식 구역과 건식 구역의 마감·환기 계통을 완전히 분리해 유지관리 부담을 줄였습니다."
+  },
+  {
+    slug: "pavi-gym-twincity", name: "PAVI GYM TWINCITY NAMSAN", kr: "파비짐 트윈시티 남산점",
+    cat: "Fitness", year: "2025", loc: "서울 용산구", area: "350㎡ (106py)",
+    scope: "설계 · 시공",
+    desc: "주상복합 단지 입주민 전용 피트니스. 남산 조망이 열리는 창가 라인에 유산소 기구를 배치했습니다."
+  },
+  {
+    slug: "sigma-fitness-sfc", name: "SIGMA FITNESS SFC MALL", kr: "시그마 피트니스 SFC몰점",
+    cat: "Fitness", year: "2024", loc: "서울 서초구", area: "410㎡ (124py)",
+    scope: "설계 · 시공",
+    desc: "몰 내 입점 지점. 통로 쪽 쇼윈도 라인에 그룹 수업룸을 배치해 지나가는 사람에게 운동 장면이 자연스럽게 보이도록 했습니다."
+  },
+  {
+    slug: "pilates-lucete80", name: "PILATES ON LUCETE 80 LOTTE MALL", kr: "필라테스 온 루체80 롯데몰점",
+    cat: "Fitness", year: "2026", loc: "서울 송파구 잠실동", area: "180㎡ (54py)",
+    scope: "설계 · 시공",
+    desc: "기구 필라테스 전문 지점. 천장 반사판 하나로 자연광을 끌어들여 낮 시간대 조명 사용을 최소화했습니다."
+  },
+  {
+    slug: "fitness-gallery-yongsan", name: "FITNESS GALLERY YONGSAN", kr: "피트니스 갤러리 용산점",
+    cat: "Fitness", year: "2023", loc: "서울 용산구", area: "520㎡ (157py)",
+    scope: "기획 · 설계 · 시공",
+    desc: "갤러리형 콘셉트의 대형 지점. 기구 사이사이에 아트월을 배치해 운동 공간이 전시장처럼 보이도록 계획했습니다."
+  }
+];
+
+/* --------------------------------------------------------- */
+(function () {
+  var grid = document.getElementById("projects");
+  var catSelect = document.getElementById("catFilter");
+  var yearSelect = document.getElementById("yearFilter");
+  var modal = document.getElementById("modal");
+  var body = document.getElementById("modalBody");
+
+  function thumbHTML(slug, n, label) {
+    return '<div class="thumb" data-label="' + label + '">' +
+      '<img src="assets/projects/' + slug + '-0' + n + '.jpg" alt="" loading="lazy">' +
+      '</div>';
+  }
+
+  grid.innerHTML = PROJECTS.map(function (p, i) {
+    return '<article class="project rv" data-cat="' + p.cat + '" data-year="' + p.year + '" data-i="' + i + '" tabindex="0">' +
+      thumbHTML(p.slug, 1, "IMAGE") +
+      '<p class="cap">' + p.name.toLowerCase() + '</p>' +
+    '</article>';
+  }).join("");
+
+  var YEARS = PROJECTS.map(function (p) { return p.year; })
+    .filter(function (y, i, arr) { return arr.indexOf(y) === i; })
+    .sort(function (a, b) { return b - a; });
+
+  catSelect.innerHTML = '<option value="ALL">Projects</option>' +
+    CATS.map(function (c) { return '<option value="' + c + '">' + c + '</option>'; }).join("");
+  yearSelect.innerHTML = '<option value="ALL">All Years</option>' +
+    YEARS.map(function (y) { return '<option value="' + y + '">' + y + '</option>'; }).join("");
+
+  function applyFilters() {
+    var cat = catSelect.value;
+    var year = yearSelect.value;
+    grid.querySelectorAll(".project").forEach(function (el) {
+      var matchCat = cat === "ALL" || el.dataset.cat === cat;
+      var matchYear = year === "ALL" || el.dataset.year === year;
+      el.classList.toggle("is-hidden", !(matchCat && matchYear));
+    });
+  }
+  catSelect.addEventListener("change", applyFilters);
+  yearSelect.addEventListener("change", applyFilters);
+
+  function open(i) {
+    var p = PROJECTS[i];
+    body.innerHTML =
+      '<div class="m-info">' +
+        '<p>location : ' + p.loc + '</p>' +
+        '<p>principal use : ' + p.cat + '</p>' +
+        '<p>build area : ' + p.area + '</p>' +
+        '<p>completed : ' + p.year + '</p>' +
+      '</div>' +
+      '<div class="m-shots">' +
+        thumbHTML(p.slug, 1, "IMAGE 01") +
+        thumbHTML(p.slug, 2, "IMAGE 02") +
+        thumbHTML(p.slug, 3, "IMAGE 03") +
+      '</div>';
+    body.querySelectorAll(".thumb").forEach(window.wireThumb);
+    modal.classList.add("is-open");
+    modal.scrollTop = 0;
+    document.body.style.overflow = "hidden";
+  }
+  function close() {
+    modal.classList.remove("is-open");
+    document.body.style.overflow = "";
+  }
+
+  grid.addEventListener("click", function (e) {
+    var card = e.target.closest(".project");
+    if (card) open(+card.dataset.i);
+  });
+  grid.addEventListener("keydown", function (e) {
+    if (e.key !== "Enter") return;
+    var card = e.target.closest(".project");
+    if (card) open(+card.dataset.i);
+  });
+  document.getElementById("modalClose").addEventListener("click", close);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
+
+  document.querySelectorAll(".thumb").forEach(window.wireThumb);
+  document.querySelectorAll(".rv").forEach(function (el, i) {
+    el.style.transitionDelay = (Math.min(i, 6) * 60) + "ms";
+  });
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); } });
+    }, { threshold: .12, rootMargin: "0px 0px -8% 0px" });
+    grid.querySelectorAll(".rv").forEach(function (el) { io.observe(el); });
+  } else {
+    grid.querySelectorAll(".rv").forEach(function (el) { el.classList.add("is-in"); });
+  }
+})();
+</script>
+</body>
+</html>
