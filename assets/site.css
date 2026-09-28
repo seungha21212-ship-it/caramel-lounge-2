@@ -125,7 +125,6 @@ button, input, textarea, select { font: inherit; color: inherit; }
   max-width: 560px;
   justify-self: start;
   margin-top: 100px;
-  margin-left: 90px;
   text-align: left;
 }
 
@@ -416,7 +415,7 @@ button, input, textarea, select { font: inherit; color: inherit; }
   :root { --pad: 22px; }
   .landing { grid-template-columns: 1fr; align-items: start; padding-top: 88px; gap: 48px; }
   .logo-block { order: 2; }
-  .intro-block { order: 1; padding-top: 0; margin-top: 0; margin-left: 0; }
+  .intro-block { order: 1; padding-top: 0; margin-top: 0; }
   .logo-mark { width: 72vw; }
   .logo-type { font-size: 12.4vw; }
   .landing-foot { flex-direction: column; gap: 6px; }
