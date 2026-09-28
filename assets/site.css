@@ -413,12 +413,12 @@ button, input, textarea, select { font: inherit; color: inherit; }
 
 @media (max-width: 760px) {
   :root { --pad: 22px; }
-  .landing { grid-template-columns: 1fr; align-items: start; padding-top: 88px; gap: 48px; }
-  .logo-block { order: 2; }
-  .intro-block { order: 1; padding-top: 0; margin-top: 0; }
+  .landing { grid-template-columns: 1fr; grid-template-rows: auto auto auto; align-items: start; padding-top: 88px; gap: 48px; }
+  .logo-block { order: 2; grid-row: 2; }
+  .intro-block { order: 1; grid-row: 1; padding-top: 0; margin-top: 0; }
   .logo-mark { width: 72vw; }
   .logo-type { font-size: 12.4vw; }
-  .landing-foot { order: 3; flex-direction: column; gap: 6px; }
+  .landing-foot { order: 3; grid-row: 3; flex-direction: column; gap: 6px; }
   .projects { grid-template-columns: 1fr; gap: 44px; }
   .form-row { grid-template-columns: 1fr; gap: 0; }
   .soul .soul-type { text-align: left; text-align-last: left; letter-spacing: -0.045em; }
