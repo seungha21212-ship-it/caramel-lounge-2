@@ -4,6 +4,33 @@
    CARAMEL LOUNGE — shared stylesheet
    ========================================================= */
 
+/* ---------------------------------------------------------
+   Site gate — minimal password screen (client-side only,
+   not real security — just keeps casual visitors out)
+   --------------------------------------------------------- */
+html.locked body > *:not(#site-gate) { display: none !important; }
+#site-gate {
+  display: none; position: fixed; inset: 0; z-index: 9999;
+  background: #fff; align-items: center; justify-content: center;
+  flex-direction: column; gap: 18px; padding: 24px;
+}
+html.locked #site-gate { display: flex; }
+#site-gate .gate-mark { font-size: 20px; letter-spacing: -0.03em; margin-bottom: 4px; }
+#site-gate .gate-mark b { font-weight: 700; }
+#site-gate .gate-mark span { font-weight: 300; }
+#site-gate form { display: flex; gap: 10px; }
+#site-gate input[type="password"] {
+  border: 1px solid #d9d8d2; border-radius: 0; padding: 11px 14px;
+  font-family: "Pretendard", "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px; width: 220px; background: none;
+}
+#site-gate input[type="password"]:focus { outline: none; border-color: #0c0c0c; }
+#site-gate button {
+  background: #0c0c0c; color: #fff; border: 0; padding: 0 22px; cursor: pointer;
+  font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+}
+#site-gate .gate-err { font-size: 12.5px; color: #b3675f; min-height: 16px; }
+
 :root {
   --black: #0c0c0c;
   --ink: #141414;

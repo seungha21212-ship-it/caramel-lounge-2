@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
+<script>try{if(localStorage.getItem('cl_unlocked')!=='1')document.documentElement.classList.add('locked');}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Project — CARAMEL LOUNGE</title>
 <meta name="description" content="CARAMEL LOUNGE가 진행한 상업공간·주거공간·사무공간·피트니스 프로젝트.">
@@ -9,6 +10,31 @@
 <link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
+
+<div id="site-gate">
+  <div class="gate-mark"><b>CARAMEL</b> <span>LOUNGE</span></div>
+  <form id="gateForm">
+    <input type="password" id="gatePw" placeholder="Password" autocomplete="off">
+    <button type="submit">Enter</button>
+  </form>
+  <div class="gate-err" id="gateErr"></div>
+</div>
+<script>
+(function () {
+  var PW = "caramellounge";
+  var form = document.getElementById("gateForm");
+  if (!form) return;
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (document.getElementById("gatePw").value === PW) {
+      try { localStorage.setItem("cl_unlocked", "1"); } catch (err) {}
+      document.documentElement.classList.remove("locked");
+    } else {
+      document.getElementById("gateErr").textContent = "비밀번호가 올바르지 않습니다.";
+    }
+  });
+})();
+</script>
 
 <header class="site-head">
   <a class="mark" href="index.html"><b>CARAMEL</b><span>LOUNGE</span></a>
