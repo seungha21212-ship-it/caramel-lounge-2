@@ -418,7 +418,7 @@ button, input, textarea, select { font: inherit; color: inherit; }
   .intro-block { order: 1; padding-top: 0; margin-top: 0; }
   .logo-mark { width: 72vw; }
   .logo-type { font-size: 12.4vw; }
-  .landing-foot { flex-direction: column; gap: 6px; }
+  .landing-foot { order: 3; flex-direction: column; gap: 6px; }
   .projects { grid-template-columns: 1fr; gap: 44px; }
   .form-row { grid-template-columns: 1fr; gap: 0; }
   .soul .soul-type { text-align: left; text-align-last: left; letter-spacing: -0.045em; }
