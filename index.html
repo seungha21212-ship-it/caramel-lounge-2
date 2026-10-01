@@ -2,7 +2,6 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<script>try{if(localStorage.getItem('cl_unlocked')!=='1')document.documentElement.classList.add('locked');}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CARAMEL LOUNGE</title>
 <meta name="description" content="CARAMEL LOUNGE는 카페·리테일·오피스 등 상업공간의 브랜드를 공간의 언어로 옮기는 인테리어 디자인 스튜디오입니다.">
@@ -24,30 +23,6 @@
 <script src="assets/intro.js" defer></script>
 <!-- INTRO END -->
 
-<div id="site-gate">
-  <div class="gate-mark"><b>CARAMEL</b> <span>LOUNGE</span></div>
-  <form id="gateForm">
-    <input type="password" id="gatePw" placeholder="Password" autocomplete="off">
-    <button type="submit">Enter</button>
-  </form>
-  <div class="gate-err" id="gateErr"></div>
-</div>
-<script>
-(function () {
-  var PW = "1019";
-  var form = document.getElementById("gateForm");
-  if (!form) return;
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    if (document.getElementById("gatePw").value === PW) {
-      try { localStorage.setItem("cl_unlocked", "1"); } catch (err) {}
-      document.documentElement.classList.remove("locked");
-    } else {
-      document.getElementById("gateErr").textContent = "비밀번호가 올바르지 않습니다.";
-    }
-  });
-})();
-</script>
 
 <main class="landing">
 
