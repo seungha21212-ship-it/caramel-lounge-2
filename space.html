@@ -462,6 +462,10 @@ var PROJECTS = [
   document.getElementById("modalClose").addEventListener("click", close);
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
 
+  /* space.html#slug 로 들어오면 해당 프로젝트 상세를 바로 연다 (About 진입 연출 썸네일 링크용) */
+  var hashIdx = PROJECTS.findIndex(function (p) { return "#" + p.slug === decodeURIComponent(location.hash); });
+  if (hashIdx > -1) open(hashIdx);
+
   document.querySelectorAll(".thumb").forEach(window.wireThumb);
   document.querySelectorAll(".rv").forEach(function (el, i) {
     el.style.transitionDelay = (Math.min(i, 6) * 60) + "ms";

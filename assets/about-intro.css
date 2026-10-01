@@ -1,0 +1,105 @@
+/* =========================================================
+   CARAMEL LOUNGE — About 진입 연출 (about.html 전용)
+   떼어내려면: about.html의 <!-- ABOUT INTRO START/END --> 블록 2곳 삭제
+   + 이 파일과 assets/about-intro.js 삭제.
+   타이밍은 about-intro.js 상단 TIMING, 단어는 WORDS 배열에서 조절.
+   ========================================================= */
+
+:root {
+  --ai-bg:    #0c0c0c;
+  --ai-dim:   #4a433c;   /* 채워지기 전 글자색 */
+  --ai-fill:  #ffffff;   /* 채워진 글자색 */
+  --ai-brown: #5b4c3d;   /* 사이트 테마 브라운 */
+  --ai-cap:   #8a7a68;   /* 카운터·캡션 */
+}
+
+#about-intro { display: none; }
+html.about-intro-on body { overflow: hidden; }
+
+html.about-intro-on #about-intro {
+  display: block;
+  position: fixed; inset: 0; z-index: 10000;
+  background: var(--ai-bg);
+  color: var(--ai-fill);
+  overflow: hidden;
+  cursor: pointer;
+  transition: background-color var(--ai-exit, .6s) ease, opacity var(--ai-exit, .6s) ease;
+}
+
+/* --- 흐린 프로젝트 썸네일 -------------------------------- */
+#about-intro .ai-thumbs a {
+  position: absolute;
+  width: clamp(64px, 7.6vw, 124px);
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #1a1714;
+  opacity: 0;
+  transition: opacity var(--ai-thumbs, .5s) ease, filter .35s ease;
+  filter: grayscale(1);
+}
+#about-intro.is-thumbs .ai-thumbs a { opacity: .25; }
+#about-intro .ai-thumbs a:hover { opacity: .9 !important; filter: none; }
+#about-intro .ai-thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* 데스크탑 배치 — 화면 가운데 가로띠(텍스트 자리)는 비워둔다 */
+#about-intro .ai-thumbs a:nth-child(1) { left: 4%;  top: 9%; }
+#about-intro .ai-thumbs a:nth-child(2) { left: 21%; top: 18%; }
+#about-intro .ai-thumbs a:nth-child(3) { left: 63%; top: 8%; }
+#about-intro .ai-thumbs a:nth-child(4) { left: 85%; top: 16%; }
+#about-intro .ai-thumbs a:nth-child(5) { left: 9%;  top: 64%; }
+#about-intro .ai-thumbs a:nth-child(6) { left: 33%; top: 70%; }
+#about-intro .ai-thumbs a:nth-child(7) { left: 57%; top: 66%; }
+#about-intro .ai-thumbs a:nth-child(8) { left: 80%; top: 62%; }
+
+/* --- 카운터 / 캡션 --------------------------------------- */
+#about-intro .ai-count {
+  position: absolute; top: 22px; left: 50%; transform: translateX(-50%);
+  font-size: 11px; letter-spacing: .14em; color: var(--ai-cap);
+  font-variant-numeric: tabular-nums;
+}
+#about-intro .ai-caps {
+  position: absolute; left: var(--pad, 48px); right: var(--pad, 48px); bottom: 22px;
+  display: flex; justify-content: space-between; gap: 16px;
+  font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ai-cap);
+}
+
+/* --- 중앙 텍스트: 왼→오 소프트 채움 ---------------------- */
+#about-intro .ai-line {
+  position: absolute; left: 0; right: 0; top: 50%; transform: translate(var(--ai-shift, 0px), -50%);
+  text-align: center; white-space: nowrap;
+  font-family: var(--sans);
+  font-weight: 700; text-transform: uppercase;
+  font-size: clamp(18px, 4.6vw, 46px);
+  letter-spacing: -0.02em; line-height: 1;
+}
+#about-intro .ai-fill {
+  color: transparent;
+  background-image: linear-gradient(90deg, var(--ai-fill) 38%, var(--ai-dim) 62%);
+  background-size: 250% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text; background-clip: text;
+}
+#about-intro .ai-fill.on {
+  background-position: 0 0;
+  transition: background-position var(--ai-dur, .9s) cubic-bezier(.45, 0, .2, 1);
+}
+/* 단어 칸: 가장 긴 단어 폭으로 고정 (ghost가 폭을 잡는다) */
+#about-intro .ai-word-box { display: inline-grid; text-align: left; vertical-align: top; }
+#about-intro .ai-word-box > * { grid-area: 1 / 1; justify-self: start; }
+#about-intro .ai-ghost { visibility: hidden; }
+
+/* --- 종료: 배경이 About 상단 톤으로 바뀌며 사라짐 -------- */
+#about-intro.is-out { background-color: var(--paper, #f4f3ef); opacity: 0; }
+#about-intro.is-out > * { opacity: 0; transition: opacity .25s ease; }
+
+@media (max-width: 760px) {
+  #about-intro .ai-thumbs a { width: 21vw; }
+  #about-intro .ai-thumbs a:nth-child(n+6) { display: none; }
+  #about-intro .ai-thumbs a:nth-child(1) { left: 6%;  top: 9%; }
+  #about-intro .ai-thumbs a:nth-child(2) { left: 64%; top: 13%; }
+  #about-intro .ai-thumbs a:nth-child(3) { left: 36%; top: 23%; }
+  #about-intro .ai-thumbs a:nth-child(4) { left: 12%; top: 65%; }
+  #about-intro .ai-thumbs a:nth-child(5) { left: 62%; top: 69%; }
+  #about-intro .ai-caps > :nth-child(2) { display: none; }
+  #about-intro .ai-caps { font-size: 9.5px; }
+}
